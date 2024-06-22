@@ -6,9 +6,8 @@ export default async function Page() {
   const accessToken = await fetchAccessToken({
     // apiKey: String(process.env.HUME_API_KEY),
     // secretKey: String(process.env.HUME_SECRET_KEY),
-    apiKey: "Tb5eXoL9OAg2sNZkc7xoGoAyvYgPUB3BPTDNJcH51OBFuziV",
-    secretKey:
-      "cAXq6DE2G2snJSwoDy93W4bdZETkfRieKAxKr10RrkRoAlYz5k2LvdsevC4PYt8N",
+    apiKey: process.env.NEXT_PUBLIC_HUME_API_KEY,
+    secretKey: process.env.NEXT_PUBLIC_HUME_SECRET_KEY,
   });
 
   if (!accessToken) {
