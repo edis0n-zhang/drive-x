@@ -27,6 +27,7 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   const numReconnects = useRef(0);
   const [trackedFaces, setTrackedFaces] = useState<TrackedFace[]>([]);
   const [emotions, setEmotions] = useState<Emotion[]>([]);
+  const [facs, setFacs] = useState<Emotion[]>([]);
   const [status, setStatus] = useState("");
   const numLoaderLevels = 5;
   const maxReconnects = 3;
@@ -111,7 +112,9 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
       newTrackedFaces.push({ boundingBox: pred.bbox });
       if (dataIndex === 0) {
         const newEmotions = pred.emotions;
+        const newFacs = pred.facs;
         setEmotions(newEmotions);
+        setFacs(newFacs);
         if (onCalibrate) {
           onCalibrate(newEmotions);
         }
@@ -215,7 +218,7 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
     const requestData = JSON.stringify({
       data: encodedBlob,
       models: {
-        face: {},
+        face: {facs : {}},
       },
     });
 
@@ -230,6 +233,14 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   return (
     <div>
       <div className="md:flex">
+      <div>
+        <h1>Facs List</h1>
+        {facs.map((item, index) => (
+          <div key={index} className="ml-10">
+            {item.name} {item.score}
+          </div>
+        ))}
+      </div>
         <FaceTrackedVideo
           className="mb-6"
           onVideoReady={onVideoReady}
