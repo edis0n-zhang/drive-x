@@ -1,11 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "lucide-react";
+import imagePath from "./driving_car.jpeg"
+import Image from "next/image"
 
 import { FaceWidgets } from "../widgets/FaceWidgets";
 
 const CameraFeed = () => {
   const videoRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(true);
+
 
   useEffect(() => {
     if (cameraActive) {

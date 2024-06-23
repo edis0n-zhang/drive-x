@@ -9,8 +9,12 @@ export default function OfferPage() {
         /* You can add more inline styles here */
     };
 
+    const handleClick = () => {
+        window.location.href = '/drive';
+    };
+
     return (
-        <div style={{ width: '100%', height: '100vh' }}>
+        <div style={{ width: '100%', height: '100%'}}>
             {/* First image */}
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', filter: 'contrast(1.2) saturate(1.1)' }}>
                 <Image
@@ -31,17 +35,83 @@ export default function OfferPage() {
                 />
             </div>
             
-            {/* Text on top */}
-            <p style={{ position: 'absolute', zIndex: 1, top: '6%', paddingLeft: '7%', paddingRight: '7%', color: 'white', fontSize: '1.9rem', fontFamily: 'Noto Sans, sans-serif', fontWeight: 550, lineHeight: '40px', textAlign: 'center', letterSpacing: '0.04em' }}>What safety features do we offer?</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '24%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', fontSize: '1.9rem' }}>🚨</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '22%', fontSize: '1.8rem', fontWeight: 'bold', fontFamily: 'Noto Sans, sans-serif', color: '#e83d30', textAlign: 'center'}}>Real-time alert system</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '20%', paddingLeft: '2%', paddingRight: '2%', fontSize: '1.1rem', fontFamily: 'Noto Sans, sans-serif', color: 'white', textAlign: 'center', fontWeight: '550'}}>we will let you know if you are falling asleep or look tired</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '24%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', fontSize: '1.9rem' }}>👩‍💼</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '22%', fontSize: '1.8rem', fontWeight: 'bold', fontFamily: 'Noto Sans, sans-serif', color: '#f8d96a', textAlign: 'center'}}>Personal driving assistant</p>
-            <p style={{ position: 'relative', zIndex: 1, top: '20%', paddingLeft: '2%', paddingRight: '2%', fontSize: '1.1rem', fontFamily: 'Noto Sans, sans-serif', color: 'white', textAlign: 'center', fontWeight: '550'}}>have someone to keep you engaged during the drive</p>
-            <div style= {{position: 'relative', top: '34%'}} className="button-container">
-            <button className="gradient-button" style={buttonStyle}>Let's drive</button>
-            </div>
+            <div style={{ 
+    position: 'relative', 
+    width: '100%', 
+    textAlign: 'center', 
+    paddingTop: '12vh',  // Adjust top padding as needed
+}}>
+    {/* Text on top */}
+    <p style={{ 
+        zIndex: 1, 
+        color: 'white', 
+        fontSize: '1.9rem', 
+        fontFamily: 'Noto Sans, sans-serif', 
+        fontWeight: 550, 
+        lineHeight: '40px', 
+        letterSpacing: '0.04em',
+        margin: 0,  // Remove default margin
+        padding: '0 20px'  // Add horizontal padding
+    }}>What safety features do we offer?</p>
+
+    {/* Emoji and Description 1 */}
+    <div style={{ 
+        marginTop: '5vh',  // Adjust top margin as needed
+    }}>
+        <p style={{ 
+            fontSize: '1.9rem', 
+            margin: 0, 
+        }}>🚨</p>
+        <p style={{ 
+            fontSize: '1.8rem', 
+            fontWeight: 'bold', 
+            fontFamily: 'Noto Sans, sans-serif', 
+            color: '#e83d30', 
+            margin: '1vh 0',
+        }}>Real-time alert system</p>
+        <p style={{ 
+            fontSize: '1.1rem', 
+            fontFamily: 'Noto Sans, sans-serif', 
+            color: 'white', 
+            margin: 0,
+            fontWeight: 'bold',
+            padding: '0 20px'  // Add horizontal padding
+        }}>we will let you know if you are falling asleep or look tired</p>
+    </div>
+
+    {/* Emoji and Description 2 */}
+    <div style={{ 
+        marginTop: '5vh',  // Adjust top margin as needed
+    }}>
+        <p style={{ 
+            fontSize: '1.9rem', 
+            margin: 0, 
+        }}>👩‍💼</p>
+        <p style={{ 
+            fontSize: '1.8rem', 
+            fontWeight: 'bold', 
+            fontFamily: 'Noto Sans, sans-serif', 
+            color: '#f8d96a', 
+            margin: '1vh 0',
+        }}>Personal driving assistant</p>
+        <p style={{ 
+            fontSize: '1.1rem', 
+            fontFamily: 'Noto Sans, sans-serif', 
+            color: 'white', 
+            margin: 0,
+            fontWeight: 'bold',
+            padding: '0 20px'  // Add horizontal padding
+        }}>have someone to keep you engaged during the drive</p>
+    </div>
+
+    {/* Button Container */}
+    <div style={{ 
+        marginTop: '10vh',  // Adjust top margin as needed
+    }}>
+        <button className="gradient-button" style={buttonStyle} onClick={handleClick}>Let's drive</button>
+    </div>
+</div>
+
         </div>
     );
 }
