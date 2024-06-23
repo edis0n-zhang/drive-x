@@ -1,0 +1,87 @@
+
+.home-container {
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+background: linear-gradient(to bottom, #0207EB, #02051F);
+position: relative;
+overflow: hidden;
+color: white;
+}
+.background-image {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 60%;
+background-image: url('../../public/first_page_photo.jpeg'); 
+background-size: cover; 
+background-position: center center; 
+background-repeat: no-repeat;
+z-index: 0; 
+border-bottom-left-radius: 10%;
+border-bottom-right-radius: 10%;
+filter: brightness(1.4) contrast(1.3) saturate(1.2);
+opacity: 0.8; 
+}
+
+
+.overlay-image {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%; 
+height: 100%;
+background-image: url('../../public/effect_blue.png'); 
+background-size: cover; 
+background-position: center; 
+background-repeat: no-repeat;
+z-index: 1;
+filter: contrast(1.2) saturate(1.1);
+opacity: 0.2; 
+}
+
+.main-text {
+position: absolute;
+top: 60%; 
+left: 50%;
+transform: translateX(-50%);
+font-family: 'Noto Sans', sans-serif; 
+font-weight: 800; /* Extra bold */
+font-size: 35px;
+text-align: center; /* Justify the text */
+text-justify: inter-word; /* Ensure words are justified */
+width: 80%; /* Adjust the width as needed */
+line-height: 1.4; /* Adjust line height for readability */
+z-index: 2; /* Ensure it is above both images */
+}
+
+.button-container {
+
+text-align: center;
+margin-top: 20px; /* Adjust spacing */
+z-index: 1; /* Ensure it is below the .main-text */
+}
+
+.gradient-button {
+background: linear-gradient(to bottom, #9B9DFF, #7971B5); 
+color: white;
+font-size: 25px;
+padding: 15px 30px;
+border: none;
+border-radius: 25px;
+cursor: pointer;
+transition: background 0.3s ease;
+}
+
+.gradient-button:hover {
+background: linear-gradient(to bottom, #7971B5, #9B9DFF); 
+}
+
+.offer-text {
+color: white;
+font-size: 14px;
+margin-top: 8px; 
+font-weight: normal; 
+}
