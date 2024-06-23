@@ -1,6 +1,7 @@
 import React from "react";
-import "./Home.css";
+import "./home.css";
 import Link from "next/link";
+import DriveX from "../../components/logo";
 
 export default function Home() {
   return (
@@ -15,16 +16,17 @@ export default function Home() {
             style={{
               fontSize: "40px",
               color: "#9B9DFF",
-              WebkitTextStroke: "1px #393cb8",
             }}
           >
-            driveX
+            <DriveX />
           </span>
           <div className="button-container">
             <button className="gradient-button">
               <Link href="/drive">Let's drive</Link>
             </button>
-            <Link href="/offer"><p className="offer-text"> ℹ️ see what we offer</p></Link>
+            <Link href="/offer">
+              <p className="offer-text"> ℹ️ see what we offer</p>
+            </Link>
           </div>
         </h1>
       </div>

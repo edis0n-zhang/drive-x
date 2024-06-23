@@ -1,5 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TrackedFace } from "../../lib/data/trackedFace";
+import { Camera } from "lucide-react";
+import imagePath from "../../public/driving_car.jpeg";
+import Image from "next/image";
 
 type FaceTrackedVideoProps = {
   className?: string;
@@ -18,6 +21,37 @@ export function FaceTrackedVideo({
 }: FaceTrackedVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [cameraActive, setCameraActive] = useState(true);
+
+  useEffect(() => {
+    if (cameraActive) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+  }, [cameraActive]);
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error("Error accessing the camera:", err);
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+  const toggleCamera = () => {
+    setCameraActive(!cameraActive);
+  };
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -78,15 +112,27 @@ export function FaceTrackedVideo({
   }, [trackedFaces, width, height]);
 
   return (
-    <div className="w-full h-full max-w-full aspect-auto rounded-b-[10%] overflow-hidden relative bg-gray-50 bg-opacity-0">
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        className={`w-full h-full object-cover transform scale-x-[-1] ${
-          className || ""
-        }`}
-      />
+    <div className="w-full h-full max-w-full aspect-auto rounded-b-[10%] overflow-hidden relative">
+      {cameraActive ? (
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <Image
+          src={imagePath}
+          alt="Camera off"
+          className="w-full h-full object-cover"
+        />
+      )}
+      <button
+        onClick={toggleCamera}
+        className="absolute bottom-6 right-6 p-2 bg-gray-800 text-white rounded-full"
+      >
+        <Camera className="w-6 h-6" />
+      </button>
       <canvas
         ref={canvasRef}
         className="hidden top-0 left-0 w-full h-full pointer-events-none"
