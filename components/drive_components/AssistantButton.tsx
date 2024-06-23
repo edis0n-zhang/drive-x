@@ -12,9 +12,11 @@ export default function AssistantButton() {
   useEffect(() => {
     const getAccessToken = async () => {
       try {
+        const apiKey = process.env.NEXT_PUBLIC_HUME_API_KEY as string;
+        const secretKey = process.env.NEXT_PUBLIC_HUME_SECRET_KEY as string;
         const token = await fetchAccessToken({
-          apiKey: process.env.NEXT_PUBLIC_HUME_API_KEY,
-          secretKey: process.env.NEXT_PUBLIC_HUME_SECRET_KEY,
+          apiKey,
+          secretKey,
         });
         setAccessToken(token);
       } catch (error) {
