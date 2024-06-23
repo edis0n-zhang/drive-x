@@ -61,92 +61,92 @@ const Home = () => {
   };
 
   const Alert = () => {
-    const audioRef = useRef(new Audio('/alert.mp3')); // Create audio reference
+    const audioRef = useRef(new Audio("/alert.mp3")); // Create audio reference
     useEffect(() => {
       const audio = audioRef.current;
       audio.loop = true;
-  
+
       // Play audio when component mounts
       audio.play();
-  
+
       // Cleanup function to pause and reset audio on component unmount
       return () => {
         audio.pause();
         audio.currentTime = 0;
       };
     }, []); // Empty dependency array ensures this effect runs only on mount and unmount
-  return (
-    <div className="home-container">
-      <div className="solid-background"></div>
-      <main className="flex-grow flex flex-col justify-center items-center px-6 pb-20 pt-20">
-        <div className="w-full max-w-sm text-center pt-24">
-          <p
-            style={{
-              position: "relative",
-              zIndex: 2,
-              top: "24%",
-              left: "50%", // Adjusted to center horizontally
-              transform: "translateX(-50%)",
-              textAlign: "center",
-              fontSize: "3.2rem",
-            }}
-          >
-            🚨
-          </p>
-          <p
-            style={{
-              position: "relative",
-              zIndex: 2,
-              top: "22%",
-              fontSize: "3.2rem",
-              fontWeight: "bold",
-              fontFamily: "Noto Sans, sans-serif",
-              color: "#e83d30",
-              textAlign: "center",
-              marginTop: "20px",
-            }}
-          >
-            Alert
-          </p>
-          <p
-            style={{
-              position: "relative",
-              zIndex: 1,
-              top: "20%",
-              paddingLeft: "2%",
-              paddingRight: "2%",
-              fontSize: "2.2rem",
-              fontFamily: "Noto Sans, sans-serif",
-              color: "white",
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
-            It seems like you are tired, consider pulling over!
-          </p>
-          <button
-            onClick={() => setAlert(false)}
-            style={{
-              marginTop: "180px",
-              padding: "10px 20px",
-              fontSize: "1.6rem",
-              fontWeight: "bold",
-              backgroundColor: "#e83d30",
-              color: "black",
-              border: "none",
-              borderRadius: "25px",
-              cursor: "pointer",
-              position: "relative",
-              zIndex: 2,
-            }}
-          >
-            Acknowledge
-          </button>
-        </div>
-      </main>
-    </div>
-  );
-  }
+    return (
+      <div className="home-container">
+        <div className="solid-background"></div>
+        <main className="flex-grow flex flex-col justify-center items-center px-6 pb-20 pt-20">
+          <div className="w-full max-w-sm text-center pt-24">
+            <p
+              style={{
+                position: "relative",
+                zIndex: 2,
+                top: "24%",
+                left: "50%", // Adjusted to center horizontally
+                transform: "translateX(-50%)",
+                textAlign: "center",
+                fontSize: "3.2rem",
+              }}
+            >
+              🚨
+            </p>
+            <p
+              style={{
+                position: "relative",
+                zIndex: 2,
+                top: "22%",
+                fontSize: "3.2rem",
+                fontWeight: "bold",
+                fontFamily: "Noto Sans, sans-serif",
+                color: "#e83d30",
+                textAlign: "center",
+                marginTop: "20px",
+              }}
+            >
+              Alert
+            </p>
+            <p
+              style={{
+                position: "relative",
+                zIndex: 1,
+                top: "20%",
+                paddingLeft: "2%",
+                paddingRight: "2%",
+                fontSize: "2.2rem",
+                fontFamily: "Noto Sans, sans-serif",
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              It seems like you are tired, consider pulling over!
+            </p>
+            <button
+              onClick={() => setAlert(false)}
+              style={{
+                marginTop: "180px",
+                padding: "10px 20px",
+                fontSize: "1.6rem",
+                fontWeight: "bold",
+                backgroundColor: "#e83d30",
+                color: "black",
+                border: "none",
+                borderRadius: "25px",
+                cursor: "pointer",
+                position: "relative",
+                zIndex: 2,
+              }}
+            >
+              Acknowledge
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  };
 
   const FaceWidgets = ({ onCalibrate }: FaceWidgetsProps) => {
     const authContext = useContext(AuthContext);
@@ -165,19 +165,19 @@ const Home = () => {
     const loaderNames: EmotionName[] = [];
     const lastAlertTimeRef = useRef<number>(0);
     const alertCooldown = 5000;
-  
+
     useEffect(() => {
       console.log("Mounting component");
       mountRef.current = true;
       console.log("Connecting to server");
       connect();
-  
+
       return () => {
         console.log("Tearing down component");
         stopEverything();
       };
     }, []);
-  
+
     useEffect(() => {
       function handleAlerts(emotions: Emotion[], facs: Emotion[]) {
         const currentTime = Date.now();
@@ -185,51 +185,44 @@ const Home = () => {
           return;
         }
         let tirednessAlert = false;
-        let mouthStretchCount = 0;
+        let mouthStretchDetected = false;
         let headDownDetected = false;
         let eyeClosureDetected = false;
-        let alertMessage = "Alert: ";
-  
+
         emotions.forEach((emotion) => {
           if (emotion.name === "Tiredness" && emotion.score > 0.9) {
             tirednessAlert = true;
-            alertMessage += `Tiredness score (${emotion.score}) exceeded 0.9. `;
           }
         });
-  
+
         facs.forEach((facsItem) => {
           if (facsItem.name === "AU27 Mouth Stretch" && facsItem.score > 0.6) {
-            mouthStretchCount++;
-            alertMessage += `Mouth Stretch detected (${facsItem.score}). `;
+            mouthStretchDetected = true;
           }
-  
-          if (facsItem.name === "AU54 Head Down" && facsItem.score > 0.65) {
+
+          if (facsItem.name === "AU54 Head Down" && facsItem.score > 0.7) {
             headDownDetected = true;
-            alertMessage += `Head Down detected (${facsItem.score}). `;
           }
-  
-          if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.7) {
+
+          if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.85) {
             eyeClosureDetected = true;
-            alertMessage += `Eye Closure detected (${facsItem.score}). `;
           }
         });
-  
+
         if (
           tirednessAlert ||
-          mouthStretchCount ||
+          mouthStretchDetected ||
           headDownDetected ||
           eyeClosureDetected
         ) {
-          // alert(alertMessage.trim());
           lastAlertTimeRef.current = currentTime;
           setAlert(true);
-          // redirect("/alert");
         }
       }
-  
+
       handleAlerts(emotions, facs);
     }, [emotions, facs]);
-  
+
     function connect() {
       const socket = socketRef.current;
       if (socket && socket.readyState === WebSocket.OPEN) {
@@ -240,18 +233,18 @@ const Home = () => {
         const socketUrl = `${endpointUrl}?apikey=${authContext.key}`;
         console.log(`Connecting to websocket... (using ${endpointUrl})`);
         setStatus(`Connecting to server...`);
-  
+
         const socket = new WebSocket(socketUrl);
-  
+
         socket.onopen = socketOnOpen;
         socket.onmessage = socketOnMessage;
         socket.onclose = socketOnClose;
         socket.onerror = socketOnError;
-  
+
         socketRef.current = socket;
       }
     }
-  
+
     async function socketOnOpen() {
       console.log("Connected to websocket");
       setStatus("Connecting to webcam...");
@@ -259,10 +252,12 @@ const Home = () => {
         console.log("Video recorder found, will use open socket");
         await capturePhoto();
       } else {
-        console.warn("No video recorder exists yet to use with the open socket");
+        console.warn(
+          "No video recorder exists yet to use with the open socket"
+        );
       }
     }
-  
+
     async function socketOnMessage(event: MessageEvent) {
       setStatus("");
       const response = JSON.parse(event.data);
@@ -276,12 +271,12 @@ const Home = () => {
         stopEverything();
         return;
       }
-  
+
       if (predictions.length === 0) {
         setStatus(warning.replace(".", ""));
         setEmotions([]);
       }
-  
+
       const newTrackedFaces: TrackedFace[] = [];
       predictions.forEach(async (pred: FacePrediction, dataIndex: number) => {
         newTrackedFaces.push({ boundingBox: pred.bbox });
@@ -296,13 +291,13 @@ const Home = () => {
         }
       });
       setTrackedFaces(newTrackedFaces);
-  
+
       await capturePhoto();
     }
-  
+
     async function socketOnClose(event: CloseEvent) {
       console.log("Socket closed");
-  
+
       if (mountRef.current === true) {
         setStatus("Reconnecting");
         console.log("Component still mounted, will reconnect...");
@@ -311,7 +306,7 @@ const Home = () => {
         console.log("Component unmounted, will not reconnect...");
       }
     }
-  
+
     async function socketOnError(event: Event) {
       console.error("Socket failed to connect: ", event);
       if (numReconnects.current >= maxReconnects) {
@@ -323,7 +318,7 @@ const Home = () => {
         console.warn(`Connection attempt ${numReconnects.current}`);
       }
     }
-  
+
     function stopEverything() {
       console.log("Stopping everything...");
       mountRef.current = false;
@@ -344,23 +339,23 @@ const Home = () => {
         console.warn("Could not stop recorder, not initialized yet");
       }
     }
-  
+
     async function onVideoReady(videoElement: HTMLVideoElement) {
       console.log("Video element is ready");
-  
+
       if (!photoRef.current) {
         console.error("No photo element found");
         return;
       }
-  
+
       if (!recorderRef.current && recorderCreated.current === false) {
         console.log("No recorder yet, creating one now");
         recorderCreated.current = true;
         const recorder = await VideoRecorder.create(
           videoElement,
-          photoRef.current,
+          photoRef.current
         );
-  
+
         recorderRef.current = recorder;
         const socket = socketRef.current;
         if (socket && socket.readyState === WebSocket.OPEN) {
@@ -371,28 +366,28 @@ const Home = () => {
         }
       }
     }
-  
+
     async function capturePhoto() {
       const recorder = recorderRef.current;
       console.log("Capturing photo...");
-  
+
       if (!recorder) {
         console.error("No recorder found");
         return;
       }
-  
+
       const photoBlob = await recorder.takePhoto();
       sendRequest(photoBlob);
     }
-  
+
     async function sendRequest(photoBlob: Blob) {
       const socket = socketRef.current;
-  
+
       if (!socket) {
         console.error("No socket found");
         return;
       }
-  
+
       const encodedBlob = await blobToBase64(photoBlob);
       const requestData = JSON.stringify({
         data: encodedBlob,
@@ -400,7 +395,7 @@ const Home = () => {
           face: { facs: {} },
         },
       });
-  
+
       if (socket.readyState === WebSocket.OPEN) {
         socket.send(requestData);
       } else {
@@ -408,7 +403,7 @@ const Home = () => {
         socket.close();
       }
     }
-  
+
     return (
       <div className="h-screen flex flex-col items-start items-center justify-start overflow-hidden">
         <FaceTrackedVideo
@@ -434,16 +429,15 @@ const Home = () => {
   return (
     <div>
       {alert ? (
-        <Alert/>
+        <Alert />
       ) : (
         <div
-      style={gradientStyle}
-      className="h-screen flex flex-col items-start justify-start overflow-hidden"
-    >
-      {/* <CameraFeed /> */}
-      <FaceWidgets />
-
-    </div>
+          style={gradientStyle}
+          className="h-screen flex flex-col items-start justify-start overflow-hidden"
+        >
+          {/* <CameraFeed /> */}
+          <FaceWidgets />
+        </div>
       )}
     </div>
   );
