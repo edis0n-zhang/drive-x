@@ -216,11 +216,9 @@ const Home = () => {
           if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.85) {
             eyeClosureDetected += 1;
             console.log("eye closure detected", eyeClosureDetected);
-          } else {
-            eyeClosureDetected = 0;
           }
         });
-        console.log("detected: ", mouthStretchDetected);
+
         if (
           eyeClosureDetected > 3 ||
           mouthStretchDetected > 2 ||
