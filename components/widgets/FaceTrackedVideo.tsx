@@ -118,7 +118,7 @@ export function FaceTrackedVideo({
           ref={videoRef}
           autoPlay
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transform scale-x-[-1]"
         />
       ) : (
         <Image
