@@ -29,7 +29,7 @@ export default function Home() {
       <Button className="rounded-full" size="icon">
         <Mic className="h-20 w-20 p-2" />
       </Button>
-      <p className="font-inter m-4 font-inter font-bold">
+      <p className="font-inter m-4 mb-16 font-inter font-bold">
         Your Driving Companion
       </p>
     </div>
