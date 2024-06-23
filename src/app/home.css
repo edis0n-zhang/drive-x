@@ -46,6 +46,7 @@ opacity: 0.2;
 position: absolute;
 top: 60%; 
 left: 50%;
+padding-top: 15px;
 transform: translateX(-50%);
 font-family: 'Noto Sans', sans-serif; 
 font-weight: 800; /* Extra bold */
