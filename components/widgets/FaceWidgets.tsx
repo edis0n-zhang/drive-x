@@ -2,6 +2,8 @@ import { Emotion, EmotionName } from "../../lib/data/emotion";
 import { None, Optional } from "../../lib/utilities/typeUtilities";
 import { useContext, useEffect, useRef, useState } from "react";
 
+import { redirect } from "next/navigation";
+
 import { AuthContext } from "../menu/Auth";
 import { Descriptor } from "./Descriptor";
 import { FacePrediction } from "../../lib/data/facePrediction";
@@ -12,6 +14,8 @@ import { TrackedFace } from "../../lib/data/trackedFace";
 import { VideoRecorder } from "../../lib/media/videoRecorder";
 import { blobToBase64 } from "../../lib/utilities/blobUtilities";
 import { getApiUrlWs } from "../../lib/utilities/environmentUtilities";
+
+import AssistantButton from "../../components/drive_components/AssistantButton";
 
 type FaceWidgetsProps = {
   onCalibrate: Optional<(emotions: Emotion[]) => void>;
@@ -99,8 +103,9 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
         headDownDetected ||
         eyeClosureDetected
       ) {
-        alert(alertMessage.trim());
+        // alert(alertMessage.trim());
         lastAlertTimeRef.current = currentTime;
+        redirect("/alert");
       }
     }
 
@@ -235,7 +240,7 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
       recorderCreated.current = true;
       const recorder = await VideoRecorder.create(
         videoElement,
-        photoRef.current
+        photoRef.current,
       );
 
       recorderRef.current = recorder;
@@ -287,51 +292,19 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   }
 
   return (
-    <div>
-      <div className="md:flex">
-        <div>
-          <h1>Tiredness Score</h1>
-          {emotions.map(
-            (emotion, index) =>
-              emotion.name === "Tiredness" && (
-                <div key={index} className="ml-10">
-                  {emotion.name}: {emotion.score}
-                </div>
-              )
-          )}
-        </div>
-
-        <div>
-          <h1>Facs List</h1>
-          {facs.map((item, index) => (
-            <div key={index} className="ml-10">
-              {item.name} {item.score}
-            </div>
-          ))}
-        </div>
-        <FaceTrackedVideo
-          className="mb-6"
-          onVideoReady={onVideoReady}
-          trackedFaces={trackedFaces}
-          width={500}
-          height={375}
-        />
-        {!onCalibrate && (
-          <div className="ml-10">
-            <TopEmotions emotions={emotions} />
-            <LoaderSet
-              className="mt-8 ml-5"
-              emotionNames={loaderNames}
-              emotions={emotions}
-              numLevels={numLoaderLevels}
-            />
-            <Descriptor className="mt-8" emotions={emotions} />
-          </div>
-        )}
-      </div>
-
-      <div className="pt-6">{status}</div>
+    <div className="h-screen flex flex-col items-start items-center justify-start overflow-hidden">
+      <FaceTrackedVideo
+        onVideoReady={onVideoReady}
+        trackedFaces={trackedFaces}
+        width={500}
+        height={375}
+      />
       <canvas className="hidden" ref={photoRef}></canvas>
+      <AssistantButton />
+      <p className="font-inter m-5 mb-16 font-inter font-bold">
+        Your Driving Companion
+      </p>
+      {/* <div className="pt-6">{status}</div> */}
     </div>
   );
 }

@@ -62,7 +62,7 @@ function AssistantButtonInner({
 
   return (
     <Button
-      className={`rounded-full ${
+      className={`rounded-full mt-5 ${
         isOpen
           ? "bg-green-500 hover:bg-green-600"
           : "bg-blue-500 hover:bg-blue-600"

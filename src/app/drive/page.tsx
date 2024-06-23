@@ -6,6 +6,7 @@ import AssistantButton from "../../../components/drive_components/AssistantButto
 import { Mic } from "lucide-react";
 
 import { Inter } from "next/font/google";
+import { FaceWidgets } from "../../../components/widgets/FaceWidgets";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,12 +26,12 @@ export default function Home() {
   };
 
   return (
-    <div style={gradientStyle} className="flex-col">
-      <CameraFeed />
-      <AssistantButton />
-      <p className="font-inter m-5 mb-16 font-inter font-bold">
-        Your Driving Companion
-      </p>
+    <div
+      style={gradientStyle}
+      className="h-screen flex flex-col items-start justify-start overflow-hidden"
+    >
+      {/* <CameraFeed /> */}
+      <FaceWidgets />
     </div>
   );
 }

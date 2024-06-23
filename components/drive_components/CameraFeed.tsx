@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "lucide-react";
 
+import { FaceWidgets } from "../widgets/FaceWidgets";
+
 const CameraFeed = () => {
   const videoRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(true);
@@ -37,21 +39,20 @@ const CameraFeed = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen pb-10">
-      <div className="w-full h-full max-w-full aspect-auto rounded-b-[10%] overflow-hidden relative bg-gray-50 bg-opacity-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="w-full h-full object-cover transform scale-x-[-1]"
-        />
-        <button
+    <div className="w-full h-full max-w-full aspect-auto rounded-b-[10%] overflow-hidden relative bg-gray-50 bg-opacity-0">
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        className="w-full h-full object-cover transform scale-x-[-1]"
+      />
+      {/* <FaceWidgets /> */}
+      {/* <button
           onClick={toggleCamera}
           className="absolute bottom-6 right-6 p-2 bg-gray-800 text-white rounded-full"
         >
           <Camera className="w-6 h-6" />
-        </button>
-      </div>
+        </button> */}
     </div>
   );
 };
