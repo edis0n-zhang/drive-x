@@ -2,6 +2,7 @@
 
 import CameraFeed from "../../../components/drive_components/CameraFeed";
 import { Button } from "../../../components/ui/button";
+import AssistantButton from "../../../components/drive_components/AssistantButton";
 import { Mic } from "lucide-react";
 
 import { Inter } from "next/font/google";
@@ -26,10 +27,8 @@ export default function Home() {
   return (
     <div style={gradientStyle} className="flex-col">
       <CameraFeed />
-      <Button className="rounded-full" size="icon">
-        <Mic className="h-20 w-20 p-2" />
-      </Button>
-      <p className="font-inter m-4 mb-16 font-inter font-bold">
+      <AssistantButton />
+      <p className="font-inter m-5 mb-16 font-inter font-bold">
         Your Driving Companion
       </p>
     </div>
