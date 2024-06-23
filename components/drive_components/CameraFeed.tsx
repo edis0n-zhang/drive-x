@@ -1,54 +1,53 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "lucide-react";
-import imagePath from "./driving_car.jpeg"
-import Image from "next/image"
+import imagePath from "./driving_car.jpeg";
+import Image from "next/image";
 
 import { FaceWidgets } from "../widgets/FaceWidgets";
 
 const CameraFeed = () => {
-  const videoRef = useRef(null);
-  const [cameraActive, setCameraActive] = useState(true);
+  // const videoRef = useRef(null);
+  // const [cameraActive, setCameraActive] = useState(true);
 
+  // useEffect(() => {
+  //   if (cameraActive) {
+  //     startCamera();
+  //   } else {
+  //     stopCamera();
+  //   }
+  // }, [cameraActive]);
 
-  useEffect(() => {
-    if (cameraActive) {
-      startCamera();
-    } else {
-      stopCamera();
-    }
-  }, [cameraActive]);
+  // const startCamera = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  //     if (videoRef.current) {
+  //       videoRef.current.srcObject = stream;
+  //     }
+  //   } catch (err) {
+  //     console.error("Error accessing the camera:", err);
+  //   }
+  // };
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (err) {
-      console.error("Error accessing the camera:", err);
-    }
-  };
+  // const stopCamera = () => {
+  //   if (videoRef.current && videoRef.current.srcObject) {
+  //     const tracks = videoRef.current.srcObject.getTracks();
+  //     tracks.forEach((track) => track.stop());
+  //     videoRef.current.srcObject = null;
+  //   }
+  // };
 
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const toggleCamera = () => {
-    setCameraActive(!cameraActive);
-  };
+  // const toggleCamera = () => {
+  //   setCameraActive(!cameraActive);
+  // };
 
   return (
     <div className="w-full h-full max-w-full aspect-auto rounded-b-[10%] overflow-hidden relative bg-gray-50 bg-opacity-0">
-      <video
+      {/* <video
         ref={videoRef}
         autoPlay
         playsInline
         className="w-full h-full object-cover transform scale-x-[-1]"
-      />
+      /> */}
       {/* <FaceWidgets /> */}
       {/* <button
           onClick={toggleCamera}
