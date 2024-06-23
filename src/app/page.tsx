@@ -24,7 +24,7 @@ export default function Home() {
             <button className="gradient-button">
               <Link href="/drive">Let's drive</Link>
             </button>
-            <p className="offer-text"> ℹ️ see what we offer</p>
+            <Link href="/offer"><p className="offer-text"> ℹ️ see what we offer</p></Link>
           </div>
         </h1>
       </div>

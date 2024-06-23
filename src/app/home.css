@@ -83,6 +83,6 @@ background: linear-gradient(to bottom, #7971B5, #9B9DFF);
 .offer-text {
 color: white;
 font-size: 14px;
-margin-top: 8px; 
-font-weight: normal; 
+margin-top: 10px;
+text-decoration: underline; /* Add underline */
 }
