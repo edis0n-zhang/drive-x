@@ -195,8 +195,7 @@ const Home = () => {
           if (emotion.name === "Tiredness" && emotion.score > 0.9) {
             tirednessDetected += 1;
             console.log("tired detected");
-            if (tirednessDetected > 5) {
-              tirednessDetected = 0;
+            if (tirednessDetected > 3) {
               trigger = true;
             }
           } else {
@@ -217,6 +216,8 @@ const Home = () => {
           if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.85) {
             eyeClosureDetected += 1;
             console.log("eye closure detected", eyeClosureDetected);
+          } else {
+            eyeClosureDetected = 0;
           }
         });
         console.log("detected: ", mouthStretchDetected);
