@@ -148,6 +148,12 @@ const Home = () => {
     );
   };
 
+  let trigger = false;
+  let tirednessDetected = 0;
+  let mouthStretchDetected = 0;
+  let headDownDetected = 0;
+  let eyeClosureDetected = 0;
+
   const FaceWidgets = ({ onCalibrate }: FaceWidgetsProps) => {
     const authContext = useContext(AuthContext);
     const socketRef = useRef<WebSocket | null>(null);
@@ -184,36 +190,41 @@ const Home = () => {
         if (currentTime - lastAlertTimeRef.current < alertCooldown) {
           return;
         }
-        let tirednessAlert = false;
-        let mouthStretchDetected = false;
-        let headDownDetected = false;
-        let eyeClosureDetected = false;
 
         emotions.forEach((emotion) => {
           if (emotion.name === "Tiredness" && emotion.score > 0.9) {
-            tirednessAlert = true;
+            tirednessDetected += 1;
+            console.log("tired detected");
+            if (tirednessDetected > 5) {
+              tirednessDetected = 0;
+              trigger = true;
+            }
+          } else {
+            tirednessDetected = 0;
           }
         });
 
         facs.forEach((facsItem) => {
           if (facsItem.name === "AU27 Mouth Stretch" && facsItem.score > 0.6) {
-            mouthStretchDetected = true;
+            mouthStretchDetected += 1;
+            console.log("mouth detected");
           }
 
           if (facsItem.name === "AU54 Head Down" && facsItem.score > 0.7) {
-            headDownDetected = true;
+            trigger = true;
           }
 
           if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.85) {
-            eyeClosureDetected = true;
+            eyeClosureDetected += 1;
+            console.log("eye closure detected", eyeClosureDetected);
           }
         });
-
+        console.log("detected: ", mouthStretchDetected);
         if (
-          tirednessAlert ||
-          mouthStretchDetected ||
+          eyeClosureDetected > 3 ||
+          mouthStretchDetected > 2 ||
           headDownDetected ||
-          eyeClosureDetected
+          trigger
         ) {
           lastAlertTimeRef.current = currentTime;
           setAlert(true);
@@ -253,7 +264,7 @@ const Home = () => {
         await capturePhoto();
       } else {
         console.warn(
-          "No video recorder exists yet to use with the open socket"
+          "No video recorder exists yet to use with the open socket",
         );
       }
     }
@@ -353,7 +364,7 @@ const Home = () => {
         recorderCreated.current = true;
         const recorder = await VideoRecorder.create(
           videoElement,
-          photoRef.current
+          photoRef.current,
         );
 
         recorderRef.current = recorder;
