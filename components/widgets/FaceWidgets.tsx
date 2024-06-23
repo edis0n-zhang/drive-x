@@ -17,6 +17,16 @@ type FaceWidgetsProps = {
   onCalibrate: Optional<(emotions: Emotion[]) => void>;
 };
 
+type Emotion = {
+  name: string;
+  score: number;
+};
+
+type Facs = {
+  name: string;
+  score: number;
+};
+
 export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   const authContext = useContext(AuthContext);
   const socketRef = useRef<WebSocket | null>(null);
@@ -27,20 +37,13 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   const numReconnects = useRef(0);
   const [trackedFaces, setTrackedFaces] = useState<TrackedFace[]>([]);
   const [emotions, setEmotions] = useState<Emotion[]>([]);
+  const [facs, setFacs] = useState<Emotion[]>([]);
   const [status, setStatus] = useState("");
   const numLoaderLevels = 5;
   const maxReconnects = 3;
-  const loaderNames: EmotionName[] = [
-    "Calmness",
-    "Joy",
-    "Amusement",
-    "Anger",
-    "Confusion",
-    "Disgust",
-    "Sadness",
-    "Horror",
-    "Surprise (negative)",
-  ];
+  const loaderNames: EmotionName[] = [];
+  const lastAlertTimeRef = useRef<number>(0);
+  const alertCooldown = 5000;
 
   useEffect(() => {
     console.log("Mounting component");
@@ -53,6 +56,56 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
       stopEverything();
     };
   }, []);
+
+  useEffect(() => {
+    function handleAlerts(emotions: Emotion[], facs: Emotion[]) {
+      const currentTime = Date.now();
+      if (currentTime - lastAlertTimeRef.current < alertCooldown) {
+        return;
+      }
+      let tirednessAlert = false;
+      let mouthStretchCount = 0;
+      let headDownDetected = false;
+      let eyeClosureDetected = false;
+      let alertMessage = "Alert: ";
+
+      emotions.forEach((emotion) => {
+        if (emotion.name === "Tiredness" && emotion.score > 0.9) {
+          tirednessAlert = true;
+          alertMessage += `Tiredness score (${emotion.score}) exceeded 0.9. `;
+        }
+      });
+
+      facs.forEach((facsItem) => {
+        if (facsItem.name === "AU27 Mouth Stretch" && facsItem.score > 0.6) {
+          mouthStretchCount++;
+          alertMessage += `Mouth Stretch detected (${facsItem.score}). `;
+        }
+
+        if (facsItem.name === "AU54 Head Down" && facsItem.score > 0.65) {
+          headDownDetected = true;
+          alertMessage += `Head Down detected (${facsItem.score}). `;
+        }
+
+        if (facsItem.name === "AU43 Eye Closure" && facsItem.score > 0.7) {
+          eyeClosureDetected = true;
+          alertMessage += `Eye Closure detected (${facsItem.score}). `;
+        }
+      });
+
+      if (
+        tirednessAlert ||
+        mouthStretchCount ||
+        headDownDetected ||
+        eyeClosureDetected
+      ) {
+        alert(alertMessage.trim());
+        lastAlertTimeRef.current = currentTime;
+      }
+    }
+
+    handleAlerts(emotions, facs);
+  }, [emotions, facs]);
 
   function connect() {
     const socket = socketRef.current;
@@ -111,7 +164,9 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
       newTrackedFaces.push({ boundingBox: pred.bbox });
       if (dataIndex === 0) {
         const newEmotions = pred.emotions;
+        const newFacs = pred.facs;
         setEmotions(newEmotions);
+        setFacs(newFacs);
         if (onCalibrate) {
           onCalibrate(newEmotions);
         }
@@ -178,7 +233,10 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
     if (!recorderRef.current && recorderCreated.current === false) {
       console.log("No recorder yet, creating one now");
       recorderCreated.current = true;
-      const recorder = await VideoRecorder.create(videoElement, photoRef.current);
+      const recorder = await VideoRecorder.create(
+        videoElement,
+        photoRef.current
+      );
 
       recorderRef.current = recorder;
       const socket = socketRef.current;
@@ -193,6 +251,7 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
 
   async function capturePhoto() {
     const recorder = recorderRef.current;
+    console.log("Capturing photo...");
 
     if (!recorder) {
       console.error("No recorder found");
@@ -215,7 +274,7 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
     const requestData = JSON.stringify({
       data: encodedBlob,
       models: {
-        face: {},
+        face: { facs: {} },
       },
     });
 
@@ -230,6 +289,26 @@ export function FaceWidgets({ onCalibrate }: FaceWidgetsProps) {
   return (
     <div>
       <div className="md:flex">
+        <div>
+          <h1>Tiredness Score</h1>
+          {emotions.map(
+            (emotion, index) =>
+              emotion.name === "Tiredness" && (
+                <div key={index} className="ml-10">
+                  {emotion.name}: {emotion.score}
+                </div>
+              )
+          )}
+        </div>
+
+        <div>
+          <h1>Facs List</h1>
+          {facs.map((item, index) => (
+            <div key={index} className="ml-10">
+              {item.name} {item.score}
+            </div>
+          ))}
+        </div>
         <FaceTrackedVideo
           className="mb-6"
           onVideoReady={onVideoReady}

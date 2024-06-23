@@ -5,4 +5,5 @@ export type FacePrediction = {
   face_id: string;
   bbox: BoundingBox;
   emotions: Emotion[];
+  facs: Emotion[];
 };
