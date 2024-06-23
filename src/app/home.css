@@ -42,6 +42,19 @@ filter: contrast(1.2) saturate(1.1);
 opacity: 0.2; 
 }
 
+.solid-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75%;
+    background-color: #03051F; 
+    z-index: 0; 
+    border-bottom-left-radius: 60% 15%;
+    border-bottom-right-radius: 60% 15%;
+    }
+    
+
 .main-text {
 position: absolute;
 top: 60%; 
@@ -83,6 +96,6 @@ background: linear-gradient(to bottom, #7971B5, #9B9DFF);
 .offer-text {
 color: white;
 font-size: 14px;
-margin-top: 8px; 
-font-weight: normal; 
+margin-top: 10px;
+text-decoration: underline; /* Add underline */
 }
