@@ -51,6 +51,7 @@ export default function OfferPage() {
         lineHeight: '40px', 
         letterSpacing: '0.04em',
         margin: 0,  // Remove default margin
+        padding: '0 20px'  // Add horizontal padding
     }}>What safety features do we offer?</p>
 
     {/* Emoji and Description 1 */}
@@ -74,6 +75,7 @@ export default function OfferPage() {
             color: 'white', 
             margin: 0,
             fontWeight: 'bold',
+            padding: '0 20px'  // Add horizontal padding
         }}>we will let you know if you are falling asleep or look tired</p>
     </div>
 
@@ -98,6 +100,7 @@ export default function OfferPage() {
             color: 'white', 
             margin: 0,
             fontWeight: 'bold',
+            padding: '0 20px'  // Add horizontal padding
         }}>have someone to keep you engaged during the drive</p>
     </div>
 
