@@ -1,1 +1,3 @@
+#driveX
+
 driveX is a tool that helps people experience safe night driving. Its safety features include a real-time alert system, which triggers a sound and notification when it sees that the driver is falling asleep or looks tired. It uses a live camera and when it notices that the person is drowsy, it will immediately show this alert and play the sound continuously until the driver acknowledges the alert. It also includes a personal driving assistant, which helps keep the driver engaged during the ride. It can chat in a natural voice with the driver about their day or talk about topics of their interest to help them stay awake.
